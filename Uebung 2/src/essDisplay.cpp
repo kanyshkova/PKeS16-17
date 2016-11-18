@@ -188,11 +188,8 @@ void writeValueToDisplay(float value, char dec){
   if(value<0){
     wasnegative = true; value = value * (-1);
   }
-  Serial.println(value);
   value = value * 10;
-  Serial.println(value);
   int intvalue = value;
-  Serial.println(intvalue);
 
   char stream[3];
   stream[0]='B';
