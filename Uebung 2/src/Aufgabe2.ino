@@ -43,6 +43,10 @@ int distance_raw;
 float distance_lin;
 float distance_avr;
 int counter=0;
+<<<<<<< HEAD
+=======
+int arr[21];
+>>>>>>> d4b1f7da966c61100267152e9bedd38ef521b729
 
 // level variables
 static float xyz_GyrAccMag[9];
@@ -86,6 +90,7 @@ void setup() {
  *  display depending on the choosen sensor.
  */
 void loop() {
+<<<<<<< HEAD
   if (sensor == 0){
       distance_raw = readADC(1);  // <- Check the channel ID for your
       int distance_temp = filter(distance_raw);
@@ -98,10 +103,49 @@ void loop() {
       // TODO: Include a filter here
   }
   writeValueToDisplay(distance_raw);
+=======
+  int distance_temp;
+  bool over = false;
+  if (sensor == 0){
+      distance_raw = readADC(1);  // <- Check the channel ID for your
+      distance_temp = filter(distance_raw);
+      distance_lin = linearizeDistanceLong(distance_temp);
+      if(distance_lin > 60.0){
+        writeDigitsToDisplay(displayMask('E'), displayMask('r'), displayMask('r'));
+        over = true;
+      }
+      if(distance_lin < 30.0){
+        writeDigitsToDisplay(displayMask('E'), displayMask('r'), displayMask('r'));
+        over = true;
+      }
+      }
+  else{
+      distance_raw = readADC(2); // <- Check the channel ID
+      distance_temp = filter(distance_raw);
+      distance_lin = linearizeDistanceShort(distance_temp);
+      if(distance_lin > 31.0){
+        writeDigitsToDisplay(displayMask('E'), displayMask('r'), displayMask('r'));
+        over = true;
+      }
+      if(distance_lin < 4.0){
+        writeDigitsToDisplay(displayMask('E'), displayMask('r'), displayMask('r'));
+        over = true;
+      }
+  }
+  //Serial.println(distance_lin);
+  //Serial.print("Temp: ");
+  //Serial.println(distance_temp);
+  //Serial.print("Lin: ");
+  Serial.println(distance_lin);
+  if(over==false){
+    writeValueToDisplay(distance_lin,1);
+  }
+>>>>>>> d4b1f7da966c61100267152e9bedd38ef521b729
   delay(50);
 }
 
 int filter(int distance_new){
+<<<<<<< HEAD
   int arr[5];
   arr[counter%5]=distance_new;
   int ave = 0;
@@ -113,4 +157,16 @@ int filter(int distance_new){
   }
   counter++;
   return ave/length;
+=======
+  //int length = sizeof(arr)/sizeof(arr[0]);
+  arr[counter%20]=distance_new;
+  int ave = 0;
+  int i = 0;
+  while(arr[i]!=0){
+    ave += arr[i];
+    i++;
+  }
+  counter++;
+  return ave/i;
+>>>>>>> d4b1f7da966c61100267152e9bedd38ef521b729
 }
