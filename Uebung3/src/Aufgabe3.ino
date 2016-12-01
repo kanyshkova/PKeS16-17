@@ -93,10 +93,10 @@ void loop() {
       pitch = 0;
       roll = 0;
 
-			float pitch_new;// = //measured value directly mapped with according function
+			float pitch_new = MPU9150_calculate_acc_SI(MPU9150_readSensor(MPU9150_ACCEL_XOUT_L,MPU9150_ACCEL_XOUT_H));//measured value directly mapped with according function
 			float pitch_ave = filter(pitch_new, 0);
 
-			float roll_new;// = //measured value directly mapped with according function
+			float roll_new = MPU9150_calculate_acc_SI(MPU9150_readSensor(MPU9150_ACCEL_YOUT_L,MPU9150_ACCEL_YOUT_H)); //measured value directly mapped with according function
 			float roll_ave = filter(roll_new, 1);
       // TODO write a spirit level visualization
       //viewBalance(pitch_ave, roll_ave);
