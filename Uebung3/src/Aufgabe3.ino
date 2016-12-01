@@ -72,6 +72,10 @@ void setup() {
   MPU9150_writeSensor(MPU9150_PWR_MGMT_1, 0);
 }
 
+float calcAngle(float pr){
+  return 9.174311927 * pr;
+}
+
 void loop() {
   // Exemplary output of acceleration data
   //Serial.print(MPU9150_readSensor(MPU9150_ACCEL_XOUT_L,MPU9150_ACCEL_XOUT_H));
@@ -85,7 +89,8 @@ void loop() {
       acc_SI_z = MPU9150_calculate_acc_SI(MPU9150_readSensor(MPU9150_ACCEL_ZOUT_L,MPU9150_ACCEL_ZOUT_H));
       float filteredvalue = filter(acc_SI_z,0);
       writeValueToDisplay(acc_SI_z, 1);
-      Serial.print(filteredvalue);
+      float newval = calcAngle(filteredvalue);
+      Serial.print(newval);
       Serial.println();
   }
   if (commandToBot == 'S'){
@@ -93,13 +98,17 @@ void loop() {
       pitch = 0;
       roll = 0;
 
-			float pitch_new = MPU9150_calculate_acc_SI(MPU9150_readSensor(MPU9150_ACCEL_XOUT_L,MPU9150_ACCEL_XOUT_H));//measured value directly mapped with according function
+			float pitch_new = MPU9150_readSensor(MPU9150_ACCEL_XOUT_L,MPU9150_ACCEL_XOUT_H);//measured value directly mapped with according function
 			float pitch_ave = filter(pitch_new, 0);
+      pitch_ave = MPU9150_calculate_acc_SI(pitch_ave);
+      float pitchangle = calcAngle(pitch_ave);
 
-			float roll_new = MPU9150_calculate_acc_SI(MPU9150_readSensor(MPU9150_ACCEL_YOUT_L,MPU9150_ACCEL_YOUT_H)); //measured value directly mapped with according function
+			float roll_new = MPU9150_readSensor(MPU9150_ACCEL_YOUT_L,MPU9150_ACCEL_YOUT_H); //measured value directly mapped with according function
 			float roll_ave = filter(roll_new, 1);
+      roll_ave = MPU9150_calculate_acc_SI(roll_ave);
+      float rollangle = calcAngle(roll_ave);
       // TODO write a spirit level visualization
-      //viewBalance(pitch_ave, roll_ave);
+      geeetToTheDISPLAY(pitchangle,rollangle);
   }
   _delay_ms(200);
 }

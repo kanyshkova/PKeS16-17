@@ -211,3 +211,48 @@ void writeValueToDisplay(float value, char dec){
     writeDigitsToDisplay(displayMask(stream[2]+48),displayDot(stream[1]+48),displayMask(stream[0]+48));
   }
 }
+
+void geeetToTheDISPLAY(float roll, float pitch){
+  //Serial.println(pitch);
+  uint8_t pos1 = 0b00000000;
+  uint8_t pos2 = 0b00000000;
+  uint8_t pos3 = 0b00000000;
+  if(pitch < -25.0){
+    pos1 |= 0b00001100;
+  }
+  if(pitch < -15.0 && pitch > -25.0){
+    pos1 |= 0b01100000;
+  }
+  if(pitch < -5.0 && pitch > -15.0){
+    pos2 |= 0b00001100;
+  }
+  if(pitch < 5.0 && pitch > -5.0){ // mittlere Pitchposition
+    pos2 |= 0b01101100;
+  }
+  if(pitch > 5.0 && pitch < 15.0){
+    pos2 |= 0b01100000;
+  }
+  if(pitch > 15.0 && pitch < 25.0){
+    pos3 |= 0b00001100;
+  }
+  if(pitch > 25.0){
+    pos3 |= 0b01100000;
+  }
+  if(roll < -20.0){ // links Rollposition
+    pos1 |= 0b10000000;
+    pos2 |= 0b10000000;
+    pos3 |= 0b10000000;
+  }
+  if(roll < 20.0 && roll > -20.0){ // mittlere Rollposition
+    pos1 |= 0b00000010;
+    pos2 |= 0b00000010;
+    pos3 |= 0b00000010;
+  }
+  if(roll > 20.0 ){ // rechts Rollposition
+    pos1 |= 0b00010000;
+    pos2 |= 0b00010000;
+    pos3 |= 0b00010000;
+  }
+
+  writeDigitsToDisplay(pos1,pos2,pos3);
+}

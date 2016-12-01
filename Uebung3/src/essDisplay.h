@@ -12,5 +12,6 @@ void writeDigitsToDisplay(char digit1, char digit2, char digit3);
 void writeValueToDisplay(int value);
 void writeValueToDisplay(float value, char dec);
 uint8_t displayMask(char val);
+void geeetToTheDISPLAY(float pitch, float roll);
 
 #endif
